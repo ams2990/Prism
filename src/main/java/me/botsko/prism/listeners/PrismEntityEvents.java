@@ -394,7 +394,12 @@ public class PrismEntityEvents implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onEntityChangeBlock(final EntityChangeBlockEvent event) {
-		String entity = event.getEntityType().getName().toLowerCase();
+		String entity;
+		if (event.getEntityType() == EntityType.PLAYER) {
+			entity = ((Player) event.getEntity()).getName();
+		} else {
+			entity = event.getEntityType().getName().toLowerCase();
+		}
 	
 		// Technically I think that I really should name it "entity-eat" for better consistency and 
 		// in case other mobs ever are made to eat. But that's not as fun
