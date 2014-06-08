@@ -1,6 +1,8 @@
 package me.botsko.prism.measurement;
 
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Map;
 import java.util.TreeMap;
 
 public class TimeTaken {
@@ -8,7 +10,7 @@ public class TimeTaken {
 	/**
 	 * 
 	 */
-	protected TreeMap<Long,String> eventsTimed = new TreeMap<Long,String>();
+	protected Map<Long,String> eventsTimed = Collections.synchronizedMap(new TreeMap<Long,String>());
 	
 	
 	/**
@@ -42,7 +44,7 @@ public class TimeTaken {
 	 * 
 	 * @return
 	 */
-	public TreeMap<Long,String> getEventsTimedList(){
+	public Map<Long,String> getEventsTimedList(){
 		return eventsTimed;
 	}
 }

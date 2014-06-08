@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.TreeMap;
+import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import me.botsko.elixr.EntityUtils;
@@ -461,19 +461,21 @@ public class Preview implements Previewable {
 		
 		// record timed events to log
 		if(plugin.getConfig().getBoolean("prism.debug")){
-			TreeMap<Long,String> timers = plugin.eventTimer.getEventsTimedList();
+			Map<Long,String> timers = plugin.eventTimer.getEventsTimedList();
 			if(timers.size() > 0){
 				long lastTime = 0;
 				long total = 0;
 				Prism.debug("-- Timer information for last action: --");
-				for (Entry<Long, String> entry : timers.entrySet()){
-					long diff = 0;
-					if(lastTime > 0){
-						diff = entry.getKey() - lastTime;
-						total += diff;
+                                synchronized(timers) {
+					for (Entry<Long, String> entry : timers.entrySet()){
+						long diff = 0;
+						if(lastTime > 0){
+							diff = entry.getKey() - lastTime;
+							total += diff;
+						}
+						Prism.debug(entry.getValue() + " " + diff + "ms");
+						lastTime = entry.getKey();
 					}
-					Prism.debug(entry.getValue() + " " + diff + "ms");
-					lastTime = entry.getKey();
 				}
 				Prism.debug("Total time: " + total + "ms");
 				Prism.debug("Changes: " + changes_applied_count);
